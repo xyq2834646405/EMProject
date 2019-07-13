@@ -50,7 +50,7 @@ public class Validation {
 				}
 			}
 		} catch (Exception e) {	// 出现了错误，就表示没有规则
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return errors ;
 	}

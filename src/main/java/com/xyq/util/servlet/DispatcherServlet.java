@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.jspsmart.upload.SmartUpload;
 
@@ -91,6 +92,32 @@ public abstract class DispatcherServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		this.doGet(request, response);
+	}
+
+	/**
+	 * 取得当前用户的session对象
+	 * @return
+	 */
+	public HttpSession getSession(){
+		return request.getSession();
+	}
+
+	/**
+	 * 设置session属性内容
+	 * @param name 属性名称
+	 * @param value 属性内容
+	 */
+	public void setSessionAttribute(String name,Object value){
+		getSession().setAttribute(name,value);
+	}
+
+	/**
+	 * 设置request属性内容
+	 * @param name 属性名称
+	 * @param value 属性内容
+	 */
+	public void setRequestAttribute(String name,Object value){
+		request.setAttribute(name,value);
 	}
 
 	/**
