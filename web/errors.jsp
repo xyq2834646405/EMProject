@@ -3,18 +3,18 @@
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
+			+ path+"/";
 	String loginUrl = basePath + "" ;
 %>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<base href="<%=basePath%>">
-<jsp:include page="/pages/plugins/include_javascript.jsp" /> 
-<link rel="stylesheet" type="text/css" href="css/login.css" />
-<script type="text/javascript" src="jquery/jquery.backstretch.min.js"></script>
-<script type="text/javascript" src="js/login.js"></script>
+	<base href="<%=basePath%>">
+	<jsp:include page="/pages/plugins/include_javascript.jsp" />
+	<link rel="stylesheet" type="text/css" href="css/login.css" />
+	<script type="text/javascript" src="jquery/jquery.backstretch.min.js"></script>
+	<script type="text/javascript" src="js/login.js"></script>
 </head>
 <body>
 	<div class="top-content">
@@ -32,6 +32,14 @@
 						</div>
 						<div class="form-bottom" style="background: white;">
 							<span class="h5">程序出错了，请返回首页，与管理员联系！</span>
+							<span class="h5">
+								程序出现了如下的错误问题:
+								<ul>
+									<c:forEach items="${errors}" var="me">
+										<li>${me.key}:${me.value}</li>
+									</c:forEach>
+								</ul>
+							</span>
 						</div>
 					</div>
 				</div>

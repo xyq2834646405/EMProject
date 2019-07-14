@@ -3,10 +3,8 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/filters-2.0.235.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/javax.servlet.jsp.jstl.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/jsp-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jstl-impl-1.2.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/kaptcha-0.0.9.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/servlet-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/SmartUpload.jar!/" />
     </CLASSES>
     <JAVADOC />

@@ -21,6 +21,7 @@ public class MemberLoginServlet extends DispatcherServlet {
             Map<String, Object> result = memberServiceBack.login(member);
             boolean flag = (Boolean) result.get("flag");
             if(flag){//登陆检测
+                setSessionAttribute("mid",member.getMid());
                 setSessionAttribute("name",result.get("name"));
                 setSessionAttribute("sflag",result.get("sflag"));
                 setUrlAndMsg("index.page","login.success.msg");
@@ -30,6 +31,12 @@ public class MemberLoginServlet extends DispatcherServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "forward.page";
+    }
+
+    public String logout(){
+        getSession().invalidate();//让session失效
+        setUrlAndMsg("login.page","logout.msg");
         return "forward.page";
     }
 
