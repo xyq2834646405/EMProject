@@ -1,10 +1,16 @@
 package com.xyq.servlet.back;
 
+import com.xyq.service.back.IDeptServiceBack;
 import com.xyq.service.back.IEmpServiceBack;
+import com.xyq.service.back.ILevelServiceBack;
+import com.xyq.service.back.impl.DeptServiceBackImpl;
 import com.xyq.service.back.impl.EmpServiceBackImpl;
+import com.xyq.service.back.impl.LevelServiceBackImpl;
 import com.xyq.servlet.abs.EMServlet;
 import com.xyq.util.factory.ServiceFactory;
+import com.xyq.vo.Dept;
 import com.xyq.vo.Emp;
+import com.xyq.vo.Level;
 
 import javax.servlet.annotation.WebServlet;
 import java.util.Map;
@@ -57,6 +63,29 @@ public class EmpServletBack extends EMServlet {
         }else {
             addError("auth","auth.failure.msg");
             return "error.page";
+        }
+    }
+
+    public void checkDept(){
+        int deptno = getIntParameter("deptno");//接收发送来的部门编号
+        IDeptServiceBack deptServiceBack = ServiceFactory.getInstance(DeptServiceBackImpl.class);
+        try {
+            Dept dept = deptServiceBack.get(deptno);
+            print(dept.getCurrnum()<dept.getMaxnum());//如果是true表示可以使用
+        } catch (Exception e) {
+            print(false);
+        }
+    }
+
+    public void checkSal(){//检测工资是否在指定范围之中
+        int lid = getIntParameter("lid");//接收发送来的级别编号
+        double sal = getDoubleParameter("sal");//接收发送来的工资数据
+        ILevelServiceBack levelServiceBack = ServiceFactory.getInstance(LevelServiceBackImpl.class);
+        try {
+            Level level = levelServiceBack.get(lid);
+            print(sal<=level.getHisal() && sal>=level.getLosal());
+        } catch (Exception e) {
+            print(false);
         }
     }
 

@@ -60,7 +60,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 						Method statusMethod = this.getClass().getMethod(status);
 						urlPage = statusMethod.invoke(this).toString();
 					} catch (Exception e) {
-						e.printStackTrace();
+						urlPage=null;
 					}
 				} else { // 回到指定的错误页上
 					request.setAttribute("errors", errors);
@@ -68,9 +68,11 @@ public abstract class DispatcherServlet extends HttpServlet {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
-		request.getRequestDispatcher(this.getPageValue(urlPage)).forward(request, response);
+		if(!(urlPage==null||"".equals(urlPage))){
+			request.getRequestDispatcher(this.getPageValue(urlPage)).forward(request, response);
+		}
 	}
 
 	/**
@@ -346,6 +348,18 @@ public abstract class DispatcherServlet extends HttpServlet {
 			srcPath = getServletContext().getRealPath("/")+this.getUploadDir()+	fileName;
 		}
 		ImageScale.scale(savePath,srcPath);
+	}
+
+	/**
+	 * 实现内容的Ajax输出
+	 * @param obj 要输出的内容,可能是文本或者json对象
+	 */
+	public void print(Object obj){
+		try {
+			response.getWriter().print(obj);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
