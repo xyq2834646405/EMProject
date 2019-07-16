@@ -1,9 +1,12 @@
 $(function() {
 	$.backstretch("images/login_back.jpg");
 	$("#imageCode").on("click",function(){
+		vld.resetForm();
+		$(code).val("");
+		$(codeDiv).attr("class","form-group")
 		$("#imageCode").attr("src","captcha.jpg?p=" + Math.random()) ;
 	}) ;
-	$("#myform").validate({
+	var vld = $("#myform").validate({
 		debug : true, // 取消表单的提交操作 
 		submitHandler : function(form) { 
 			form.submit(); // 提交表单
@@ -36,8 +39,8 @@ $(function() {
 			} ,
 			"code" : {
 				required : true ,
-				/*remote : {
-					url : "CheckCode", // 后台处理程序
+				remote : {
+					url : "CodeCheck", // 后台处理程序
 					type : "post", // 数据发送方式
 					dataType : "html", // 接受数据格式
 					data : { // 要传递的数据
@@ -48,12 +51,11 @@ $(function() {
 					dataFilter : function(data, type) {
 						if (data.trim() == "true") {
 							return true;
-						} else { 
+						} else {
 							return false;
 						}
 					}
 				}
-				*/
 			}
 		}
 	});

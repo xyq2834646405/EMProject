@@ -31,7 +31,7 @@
 							</div>
 						</div>
 						<div class="form-bottom" style="background: white;">
-							<span class="h5">程序出错了，请返回首页，与管理员联系！</span>
+							<span class="h5">程序出错了，请返回<a href="<%=basePath%>login.jsp">首页</a>，与管理员联系！</span>
 							<span class="h5">
 								程序出现了如下的错误问题:
 								<ul>

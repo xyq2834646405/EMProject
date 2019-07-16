@@ -46,6 +46,19 @@ public class Validation {
 						if (!Validation.validateDatetime(val)) {    // 验证失败
 							errors.put(temp[0], servlet.getMessageValue("validation.datetime.msg"));
 						}
+					}else {
+						if (!Validation.validateEmpty(val)) {    // 验证失败
+							errors.put(temp[0], servlet.getMessageValue("validation.string.msg"));
+						}else {//现在验证码不为空,那么就需要进行验证码是否合法的检测
+							String rand = (String) servlet.getSession().getAttribute("rand");
+							if(rand == null){//表示现在没有验证码
+								errors.put(temp[0],servlet.getMessageValue("validation.rand.msg"));
+							}else{
+								if(!rand.equalsIgnoreCase(val)){//验证码检测不通过
+									errors.put(temp[0],servlet.getMessageValue("validation.rand.msg"));
+								}
+							}
+						}
 					}
 				}
 			}
