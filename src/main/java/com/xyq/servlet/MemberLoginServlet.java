@@ -24,6 +24,8 @@ public class MemberLoginServlet extends DispatcherServlet {
                 setSessionAttribute("mid",member.getMid());
                 setSessionAttribute("name",result.get("name"));
                 setSessionAttribute("sflag",result.get("sflag"));
+                setSessionAttribute("allRoles",result.get("allActions"));
+                setSessionAttribute("allActions",result.get("allActions"));
                 setUrlAndMsg("index.page","login.success.msg");
             }else {//登陆失败
                 setUrlAndMsg("login.page","login.failure.msg");
