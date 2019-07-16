@@ -9,6 +9,7 @@ import com.xyq.service.back.impl.LevelServiceBackImpl;
 import com.xyq.servlet.abs.EMServlet;
 import com.xyq.util.factory.ServiceFactory;
 import com.xyq.vo.Dept;
+import com.xyq.vo.Elog;
 import com.xyq.vo.Emp;
 import com.xyq.vo.Level;
 
@@ -44,9 +45,11 @@ public class EmpServletBack extends EMServlet {
                 emp.setPhoto("nophoto.png");
             }
             emp.setMid(getMid());//保存当前操作的用户编号
+            Elog log = new Elog();//定义雇员日志操作,目的是保存简介信息
+            log.setNote(getStringParameter("note"));
             IEmpServiceBack empServiceBack = ServiceFactory.getInstance(EmpServiceBackImpl.class);
             try {
-                if (empServiceBack.add(emp)) {
+                if (empServiceBack.add(emp,log)) {
                     setUrlAndMsg("emp.add.servlet", "vo.add.success.msg");
                     if(isUploadFile()){
                         saveUploadFile(emp.getPhoto());//保存图片

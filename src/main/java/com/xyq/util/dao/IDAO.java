@@ -10,6 +10,13 @@ import java.sql.SQLException;
  */
 public interface IDAO<K,V> {
 	/**
+	 * 取得自动增长主键当前的ID内容,mysql使用的是LAST_INSERT_ID()函数取得
+	 * @return
+	 * @throws SQLException
+	 */
+	public Integer getLastId() throws SQLException;
+
+	/**
 	 * 保存member数据表中的数据
 	 *
 	 * @param vo 要保存数据的VO对象

@@ -1,5 +1,6 @@
 package com.xyq.service.back;
 
+import com.xyq.vo.Elog;
 import com.xyq.vo.Emp;
 
 import java.util.Map;
@@ -28,5 +29,5 @@ public interface IEmpServiceBack {
      * @return 增加成功返回true,否则返回false
      * @throws Exception
      */
-    public boolean add(Emp vo) throws Exception;
+    public boolean add(Emp vo, Elog log) throws Exception;
 }
