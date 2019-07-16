@@ -14,4 +14,13 @@ public interface IActionDao extends IDAO<Integer, Action> {
      * @throws Exception
      */
     public Set<String> findAllByMember(String mid) throws SQLException;
+
+    /**
+     * 判断指定的用户编号是否具备有指定的权限数据
+     * @param mid 用户的编号
+     * @param flag 权限标记
+     * @return 存在返回true,否则返回false
+     * @throws SQLException
+     */
+    public boolean findExists(String mid,String flag) throws SQLException;
 }
