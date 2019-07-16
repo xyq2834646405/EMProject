@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="EMProject:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/EMProject_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="EMProject" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="filters-2.0.235" />
+          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.38" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="EMProject/web/Web" />
+    </root>
+  </artifact>
+</component>

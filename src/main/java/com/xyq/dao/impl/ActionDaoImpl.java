@@ -24,7 +24,8 @@ public class ActionDaoImpl extends AbstractDAO implements IActionDao {
     }
 
     public boolean findExists(String mid, String flag) throws SQLException {
-        String sql = "select flag from action where actid in(select actid from role_action where rid in(select rid from member_role where mid=?)) where flag=?";
+        String sql = "select flag from action where actid in(select actid from role_action where rid in(select rid from member_role where mid=?)) and flag=?";
+        pstmt = conn.prepareStatement(sql);
         pstmt.setString(1,mid);
         pstmt.setString(2,flag);
         ResultSet rs = pstmt.executeQuery();

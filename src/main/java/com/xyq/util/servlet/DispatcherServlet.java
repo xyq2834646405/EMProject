@@ -6,12 +6,7 @@ import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.UUID;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import com.jspsmart.upload.SmartUpload;
 
 import com.xyq.util.bean.BeanValueUtil;
+import com.xyq.util.img.ImageScale;
 import com.xyq.util.split.SplitPageUtils;
 import com.xyq.util.vaildator.Validation;
 
@@ -79,7 +75,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 
 	/**
 	 * 取得当前的业务调用的参数
-	 * 
+	 *
 	 * @return
 	 */
 	public String getStatus() {
@@ -96,33 +92,36 @@ public abstract class DispatcherServlet extends HttpServlet {
 
 	/**
 	 * 取得当前用户的session对象
+	 *
 	 * @return
 	 */
-	public HttpSession getSession(){
+	public HttpSession getSession() {
 		return request.getSession();
 	}
 
 	/**
 	 * 设置session属性内容
-	 * @param name 属性名称
+	 *
+	 * @param name  属性名称
 	 * @param value 属性内容
 	 */
-	public void setSessionAttribute(String name,Object value){
-		getSession().setAttribute(name,value);
+	public void setSessionAttribute(String name, Object value) {
+		getSession().setAttribute(name, value);
 	}
 
 	/**
 	 * 设置request属性内容
-	 * @param name 属性名称
+	 *
+	 * @param name  属性名称
 	 * @param value 属性内容
 	 */
-	public void setRequestAttribute(String name,Object value){
-		request.setAttribute(name,value);
+	public void setRequestAttribute(String name, Object value) {
+		request.setAttribute(name, value);
 	}
 
 	/**
 	 * 取得指定参数对应的内容，不关心表单是否被封装
-	 * 
+	 *
 	 * @param paramName
 	 * @return
 	 */
@@ -137,7 +136,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 
 	/**
 	 * 取得指定参数并且将其变为int型数据返回
-	 * 
+	 *
 	 * @param paramName
 	 * @return
 	 */
@@ -147,7 +146,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 
 	/**
 	 * 取得指定参数并且将其变为int型数据返回
-	 * 
+	 *
 	 * @param paramName
 	 * @return
 	 */
@@ -157,7 +156,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 
 	/**
 	 * 取得指定参数并且将其变为Date型数据返回
-	 * 
+	 *
 	 * @param paramName
 	 * @return
 	 */
@@ -172,7 +171,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 
 	/**
 	 * 取得指定参数并且将其变为Date类型
-	 * 
+	 *
 	 * @param paramName
 	 * @return
 	 */
@@ -214,11 +213,9 @@ public abstract class DispatcherServlet extends HttpServlet {
 
 	/**
 	 * 设置业务操作完成之后的跳转路径与提示信息的Key
-	 * 
-	 * @param pageKey
-	 *            对应的Pages.properties文件中指定的key信息
-	 * @param messageKey
-	 *            对应的Messages.properties文件中指定的key信息
+	 *
+	 * @param pageKey    对应的Pages.properties文件中指定的key信息
+	 * @param messageKey 对应的Messages.properties文件中指定的key信息
 	 */
 	public void setUrlAndMsg(String pageKey, String messageKey) {
 		this.request.setAttribute("url", this.getPageValue(pageKey));
@@ -231,24 +228,27 @@ public abstract class DispatcherServlet extends HttpServlet {
 
 	/**
 	 * 取得Pages.properties文件中指定的key对应的value内容
-	 * 
-	 * @param pageKey
-	 *            要读取的资源文件的key信息
+	 *
+	 * @param pageKey 要读取的资源文件的key信息
 	 * @return
 	 */
 	public String getPageValue(String pageKey) {
 		try {
 			return this.pageResource.getString(pageKey);
-		}catch (Exception e){}
+		} catch (Exception e) {
+		}
 		return pageResource.getString("error.page");
 	}
+
 	/**
 	 * 创建新的上传文件名称
+	 *
 	 * @return
 	 */
 	public String createSingleFileName() {
-		return UUID.randomUUID() + "." + this.smart.getFiles().getFile(0).getFileExt() ;
+		return UUID.randomUUID() + "." + this.smart.getFiles().getFile(0).getFileExt();
 	}
+
 	/**
 	 * 进行文件的保存处理
 	 */
@@ -257,75 +257,114 @@ public abstract class DispatcherServlet extends HttpServlet {
 			if (this.getUploadDir() == null || "".equals(this.getUploadDir())) {
 				this.smart.getFiles().getFile(0).saveAs(super.getServletContext().getRealPath("/") + fileName);
 			} else {
-				String filePath = super.getServletContext().getRealPath("/") + this.getUploadDir() + fileName ;
-				File file  = new File(filePath) ;
-				if (!file.getParentFile().exists()) {	// 保存目录不存在
-					file.getParentFile().mkdirs() ;
+				String filePath = super.getServletContext().getRealPath("/") + this.getUploadDir() + fileName;
+				File file = new File(filePath);
+				if (!file.getParentFile().exists()) {    // 保存目录不存在
+					file.getParentFile().mkdirs();
 				}
-				this.smart.getFiles().getFile(0).saveAs(filePath); 
+				this.smart.getFiles().getFile(0).saveAs(filePath);
 			}
-			return true ;
+			return true;
 		} catch (Exception e) {
-			return false ;
-		} 
+			return false;
+		}
 	}
+
 	/**
 	 * 判断是否有上传文件
+	 *
 	 * @return
 	 */
-	public boolean isUploadFile() {	// 是否存在有上传文件
+	public boolean isUploadFile() {    // 是否存在有上传文件
 		if (this.smart == null) {
-			return false ;
+			return false;
 		}
 		try {
 			if (this.smart.getFiles().getSize() > 0) {
-				return true ;
+				return true;
 			}
 		} catch (IOException e) {
-			return false ; 
+			return false;
 		}
-		return false ; 
+		return false;
 	}
 
 	/**
 	 * 取得Messages.properties文件中指定的key对应的value内容
-	 * 
-	 * @param messageKey
-	 *            要读取的资源文件的key信息
+	 *
+	 * @param messageKey 要读取的资源文件的key信息
 	 * @return
 	 */
 	public String getMessageValue(String messageKey) {
 		return this.messageResource.getString(messageKey);
 	}
+
 	/**
 	 * 将分页所需要的参数都使用request属性传递
-	 * @param urlKey 分页执行要使用到url
+	 *
+	 * @param urlKey       分页执行要使用到url
 	 * @param allRecorders 总的记录数
-	 * @param spu 分页的相关参数
+	 * @param spu          分页的相关参数
 	 */
 	public void setSplitPage(String urlKey, int allRecorders, SplitPageUtils spu) {
 		this.request.setAttribute("url", this.getPageValue(urlKey));
 		this.request.setAttribute("allRecorders", allRecorders);
-		this.request.setAttribute("currentPage", spu.getCurrentPage()); 
-		this.request.setAttribute("lineSize", spu.getLineSize()); 
-		this.request.setAttribute("column", spu.getColumn()); 
-		this.request.setAttribute("keyWord", spu.getKeyWord());  
-		this.request.setAttribute("columnData", this.getDefaultColumn());  
+		this.request.setAttribute("currentPage", spu.getCurrentPage());
+		this.request.setAttribute("lineSize", spu.getLineSize());
+		this.request.setAttribute("column", spu.getColumn());
+		this.request.setAttribute("keyWord", spu.getKeyWord());
+		this.request.setAttribute("columnData", this.getDefaultColumn());
 	}
+
+	/**
+	 * 向集合之中进行消息的发送处理
+	 * @param key
+	 * @param messageKey
+	 */
+	public void addError(String key,String messageKey){
+		Map<String,String> error = (Map<String, String>) request.getAttribute("errors");
+		if(error==null){
+			error = new HashMap<String, String>();
+			error.put(key,getMessageValue(messageKey));
+		}
+		request.setAttribute("errors",error);
+	}
+
+	/**
+	 * 保存缩略图片
+	 * @param fileName
+	 * @return
+	 */
+	public void saveScale(String fileName){//存放缩略图
+		String srcPath = null;
+		String savePath = null;
+		if (this.getUploadDir() == null || "".equals(this.getUploadDir())) {
+			savePath = getServletContext().getRealPath("/")+"sm-"+fileName;
+			srcPath = getServletContext().getRealPath("/")+fileName;
+		} else {
+			savePath = super.getServletContext().getRealPath("/") + this.getUploadDir()+"sm-"+fileName;
+			srcPath = getServletContext().getRealPath("/")+this.getUploadDir()+	fileName;
+		}
+		ImageScale.scale(savePath,srcPath);
+	}
+
 	/**
 	 * 设置所有分页的候选列，格式安按照“标签:列名称|标签:列名称|”
+	 *
 	 * @return
 	 */
-	public abstract String getDefaultColumn() ;
+	public abstract String getDefaultColumn();
+
 	/**
 	 * 取得上传文件保存目录
+	 *
 	 * @return
 	 */
-	public abstract String getUploadDir() ;
+	public abstract String getUploadDir();
 
 	/**
 	 * 取得每一个子类的具体的操作类型，以作为消息的填充使用
-	 * 
+	 *
 	 * @return 返回每一个模块的名称
 	 */
 	public abstract String getType();
