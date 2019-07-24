@@ -17,14 +17,32 @@ import com.xyq.vo.Elog;
 import com.xyq.vo.Emp;
 import com.xyq.vo.Level;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class EmpServiceBackImpl extends AbstractService implements IEmpServiceBack {
     public Map<String, Object> listByFlag(String mid, int flag, String column, String keyWord, int currentPage, int lineSize) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         if(auth(mid,"emp:list")){
+            //查询所有的部门数据
+            IDeptDao deptDao = DAOFactory.getInstance(DeptDaoImpl.class);
+            List<Dept> allDepts = deptDao.findAll();
+            Map<Long,String> deptMap = new HashMap<Long, String>();
+            Iterator<Dept> iterDept = allDepts.iterator();
+            while(iterDept.hasNext()){
+                Dept vo = iterDept.next();
+                deptMap.put(vo.getDeptno().longValue(),vo.getDname());
+            }
+            map.put("allDepts",deptMap);
+            //查询出所有的雇员等级信息
+            ILevelDao levelDao = DAOFactory.getInstance(LevelDaoImpl.class);
+            List<Level> allLevels = levelDao.findAll();
+            Iterator<Level> iterLevel = allLevels.iterator();
+            Map<Long,String> levelMap = new HashMap<Long, String>();
+            while (iterLevel.hasNext()){
+                Level lev = iterLevel.next();
+                levelMap.put(lev.getLid().longValue(),lev.getTitle()+"-"+lev.getFlag());
+            }
+            map.put("allLevels",levelMap);
             IEmpDao empDao = DAOFactory.getInstance(EmpDaoImpl.class);
             if(column==null||"".equals(column)||keyWord==null||"".equals(keyWord)){
                 map.put("allEmps",empDao.findAllByFlag(flag,currentPage,lineSize));

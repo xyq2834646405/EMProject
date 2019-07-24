@@ -80,6 +80,8 @@ public class EmpServletBack extends EMServlet {
         try {
             Map<String,Object> map = empService.listByFlag(getMid(), flag, spu.getColumn(), spu.getKeyWord(), currentPage, lineSize) ;
             request.setAttribute("allEmps", map.get("allEmps"));	// 这个值需要传递给JSP页面
+            request.setAttribute("allDepts",map.get("allDepts"));
+            request.setAttribute("allLevels",map.get("allLevels"));
             setSplitPage(urlKey, map.get("empCount"), spu); 	// 实现了分页的参数传递
             setSplitParam("flag", flag); 	// 为后续的分页传值做准备
         } catch (Exception e) {

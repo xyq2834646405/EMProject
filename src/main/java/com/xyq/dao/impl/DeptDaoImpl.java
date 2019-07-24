@@ -63,7 +63,19 @@ public class DeptDaoImpl extends AbstractDAO implements IDeptDao {
     }
 
     public List<Dept> findAll() throws SQLException {
-        return null;
+        List<Dept> all = new ArrayList<Dept>();
+        String sql = "select deptno,dname,maxnum,currnum from dept";
+        pstmt = conn.prepareStatement(sql);
+        ResultSet rs = pstmt.executeQuery();
+        while(rs.next()){
+            Dept vo = new Dept();
+            vo.setDeptno(rs.getInt(1));
+            vo.setDname(rs.getString(2));
+            vo.setMaxnum(rs.getInt(3));
+            vo.setCurrnum(rs.getInt(4));
+            all.add(vo);
+        }
+        return all;
     }
 
     public List<Dept> findAllSplit(Integer currentPage, Integer lineSize) throws SQLException {
