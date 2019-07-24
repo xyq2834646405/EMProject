@@ -8,6 +8,7 @@ import com.xyq.service.back.impl.EmpServiceBackImpl;
 import com.xyq.service.back.impl.LevelServiceBackImpl;
 import com.xyq.servlet.abs.EMServlet;
 import com.xyq.util.factory.ServiceFactory;
+import com.xyq.util.split.SplitPageUtils;
 import com.xyq.vo.Dept;
 import com.xyq.vo.Elog;
 import com.xyq.vo.Emp;
@@ -69,6 +70,24 @@ public class EmpServletBack extends EMServlet {
         }
     }
 
+    public String list(){
+        String urlKey = "emp.list.servlet" ;
+        int flag = getIntParameter("flag") ;	// 接收flag的内容
+        SplitPageUtils spu = new SplitPageUtils(request) ;
+        int currentPage = spu.getCurrentPage() ;
+        int lineSize = spu.getLineSize() ;
+        IEmpServiceBack empService = ServiceFactory.getInstance(EmpServiceBackImpl.class) ;
+        try {
+            Map<String,Object> map = empService.listByFlag(getMid(), flag, spu.getColumn(), spu.getKeyWord(), currentPage, lineSize) ;
+            request.setAttribute("allEmps", map.get("allEmps"));	// 这个值需要传递给JSP页面
+            setSplitPage(urlKey, map.get("empCount"), spu); 	// 实现了分页的参数传递
+            setSplitParam("flag", flag); 	// 为后续的分页传值做准备
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "emp.list.page";
+    }
+
     public void checkDept(){
         int deptno = getIntParameter("deptno");//接收发送来的部门编号
         IDeptServiceBack deptServiceBack = ServiceFactory.getInstance(DeptServiceBackImpl.class);
@@ -94,6 +113,11 @@ public class EmpServletBack extends EMServlet {
 
     public Emp getEmp() {
         return emp;
+    }
+
+    @Override
+    public String getDefaultColumn() {
+        return "雇员姓名:ename|雇员职位:job";
     }
 
     @Override

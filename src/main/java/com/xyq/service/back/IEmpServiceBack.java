@@ -7,6 +7,21 @@ import java.util.Map;
 
 public interface IEmpServiceBack {
     /**
+     * 进行数据的分页列表显示,会根据column和keyWord的内容来选择调用不同的方法:
+     * @param mid
+     * @param flag
+     * @param column
+     * @param keyWord
+     * @param currentPage
+     * @param lineSize
+     * @return 返回的内容包括如下组成
+     * <li>1、allEmps、value=雇员信息集合</li>
+     * <li>2、empCount、value=雇员人数统计</li>
+     * @throws Exception
+     */
+    public Map<String,Object> listByFlag(String mid,int flag,String column,String keyWord,int currentPage,int lineSize) throws Exception;
+
+    /**
      * 在雇员追加时进行相关信息列出,包括如下内容:
      * <li>1、需要列出所有的部门信息,利用IDeptDao.findAllEmpty()方法</li>
      * <li>2、需要列出所有的工资等级数据,利用ILevelDao.findAll()方法</li>

@@ -22,6 +22,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EmpServiceBackImpl extends AbstractService implements IEmpServiceBack {
+    public Map<String, Object> listByFlag(String mid, int flag, String column, String keyWord, int currentPage, int lineSize) throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if(auth(mid,"emp:list")){
+            IEmpDao empDao = DAOFactory.getInstance(EmpDaoImpl.class);
+            if(column==null||"".equals(column)||keyWord==null||"".equals(keyWord)){
+                map.put("allEmps",empDao.findAllByFlag(flag,currentPage,lineSize));
+                map.put("empCount",empDao.getAllCountByFlag(flag));
+            }else {
+                map.put("allEmps",empDao.findAllByFlag(flag,column,keyWord,currentPage,lineSize));
+                map.put("empCount",empDao.getAllCountByFlag(flag,column,keyWord));
+            }
+        }
+        return map;
+    }
+
     public Map<String, Object> addPre(String mid) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         if(auth(mid,"emp:add")){

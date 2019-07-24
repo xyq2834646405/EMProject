@@ -86,6 +86,16 @@ public abstract class DispatcherServlet extends HttpServlet {
 		return status;
 	}
 
+	/**
+	 * 设置分页的额外参数
+	 * @param paramName 参数名称
+	 * @param paramValue 参数内容
+	 */
+	public void setSplitParam(Object paramName,Object paramValue){
+		request.setAttribute("paramName",paramName);
+		request.setAttribute("paramValue",paramValue);
+	}
+
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -308,7 +318,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 	 * @param allRecorders 总的记录数
 	 * @param spu          分页的相关参数
 	 */
-	public void setSplitPage(String urlKey, int allRecorders, SplitPageUtils spu) {
+	public void setSplitPage(String urlKey, Object allRecorders, SplitPageUtils spu) {
 		this.request.setAttribute("url", this.getPageValue(urlKey));
 		this.request.setAttribute("allRecorders", allRecorders);
 		this.request.setAttribute("currentPage", spu.getCurrentPage());

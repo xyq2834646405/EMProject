@@ -25,7 +25,7 @@
 	} catch (Exception e) {}
 %>
 <div id="searchDiv">
-	<form action="<%=url%>" method="post" class="form-horizontal">
+	<form action="<%=url%>" method="get" class="form-horizontal">
 		<div class="form-group">
 <%		// 现在columnData变量有内容
 		if (!(columnData == null || "".equals(columnData))) {
@@ -51,6 +51,7 @@
 				<span class="h5">本次查询一共返回有“<span class="text-danger"><%=allRecorders%></span>”行记录！</span>
 			</div>
 			<div class="col-md-2">
+				<input type="hidden" value="${paramValue}" name="${paramName}">
 				<input type="submit" value="检索" class="btn btn-primary">
 			</div>
 		</div>
